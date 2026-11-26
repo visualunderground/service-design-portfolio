@@ -16,4 +16,4 @@ npm run dev
 npm run build
 ```
 
-No Super or Notion service is needed to build the site. The résumé remains unpublished. Asset references in MDX start with `/assets/` and resolve inside `public/`.
+The site builds from local content and assets. The résumé remains unpublished. Asset references in MDX start with `/assets/` and resolve inside `public/`.
