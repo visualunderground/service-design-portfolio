@@ -1,5 +1,9 @@
 ---
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 const { src } = Astro.props;
 const filename = src.split('/').pop();
+if (!src.startsWith('/assets/') || !existsSync(resolve(process.cwd(), 'public', src.slice(1)))) throw new Error('Missing local portfolio attachment: ' + src);
+const url = import.meta.env.BASE_URL.replace(/\/$/, '') + src.split('/').map(encodeURIComponent).join('/');
 ---
-<p class="media-unavailable">Attachment not yet migrated: {filename}</p>
+<p><a href={url} target="_blank" rel="noopener">View PDF: {filename}</a></p>

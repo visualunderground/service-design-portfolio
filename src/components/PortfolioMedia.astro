@@ -1,8 +1,13 @@
 ---
-import images from '../images.json';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 const { src, alt, caption } = Astro.props;
 const filename = src.split('/').pop();
-const image = images[filename];
+const exact = src.startsWith('/assets/') ? src : null;
+const candidates = [exact, '/media/' + filename].filter(Boolean);
+const local = candidates.find(path => existsSync(resolve(process.cwd(), 'public', path.slice(1))));
+if (!local) throw new Error('Missing local portfolio image: ' + src);
+const url = import.meta.env.BASE_URL.replace(/\/$/, '') + local.split('/').map(encodeURIComponent).join('/');
 const hasCaption = caption || Astro.slots.has('default');
 ---
-<figure>{image ? <img loading="lazy" src={import.meta.env.BASE_URL.replace(/\/$/, '') + '/media/' + encodeURIComponent(filename)} alt={alt ?? caption ?? filename.replace(/\.[^.]+$/, '').replaceAll('-', ' ')} /> : <div class="media-unavailable">Image not yet migrated</div>}{hasCaption && <figcaption>{caption}<slot /></figcaption>}</figure>
+<figure><img loading="lazy" src={url} alt={alt ?? caption ?? filename.replace(/\.[^.]+$/, '').replaceAll('-', ' ')} />{hasCaption && <figcaption>{caption}<slot /></figcaption>}</figure>

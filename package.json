@@ -5,9 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "prebuild": "node scripts/import-media.mjs",
-    "predev": "node scripts/import-media.mjs"
+    "preview": "astro preview"
   },
   "dependencies": {
     "astro": "^5.16.0",
