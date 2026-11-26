@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Aligning an organisation to a shared vision",
+    "route": "aligning-an-organisation-to-a-shared-vision",
+    "cover": "hero-visiontype.png"
+  },
+  {
+    "title": "Designing for Confidence Under Pressure",
+    "route": "projects/designing-for-confidence-under-pressure",
+    "cover": null
+  },
+  {
+    "title": "Longitudinal studies on lean timeframes",
+    "route": "longitudinal-studies-on-lean-timeframes",
+    "cover": "hero-transfers.png"
+  },
+  {
+    "title": "Helping teams adopt service design",
+    "route": "helping-teams-adopt-service-design",
+    "cover": "hero-service_design_enablement.png"
+  },
+  {
+    "title": "Moving from services to experiences",
+    "route": "moving-from-services-to-experiences",
+    "cover": "hero-nhs_prototype.png"
+  },
+  {
+    "title": "Improving service security through 2FA",
+    "route": "improving-service-security-through-2fa",
+    "cover": "hero-2fa.png"
+  },
+  {
+    "title": "Improving DVSA's sign in experience",
+    "route": "improving-dvsas-sign-in-experience",
+    "cover": "hero-dvsa_sign_in.png"
+  }
+]

@@ -1,0 +1,5 @@
+---
+const { href, ...attributes } = Astro.props;
+const url = href?.startsWith('/') ? new URL(href,'https://tomcarrington.super.site').href : href;
+---
+<a href={url} {...attributes}><slot /></a>

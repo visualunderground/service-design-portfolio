@@ -1,0 +1,5 @@
+---
+import projects from '../projects.json';
+import Figure from './PortfolioMedia.astro';
+---
+<div class="gallery">{projects.map(({title, route, cover}) => <a href={'https://tomcarrington.super.site/' + route}>{cover && <Figure src={cover} alt="" />}<strong>{title}</strong></a>)}</div>
