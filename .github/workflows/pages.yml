@@ -16,6 +16,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Cache npm downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-portfolio-npm-${{ hashFiles('package.json', 'package-lock.json') }}
+          restore-keys: ${{ runner.os }}-portfolio-npm-
+      - name: Cache imported media
+        uses: actions/cache@v4
+        with:
+          path: public/media
+          key: portfolio-media-v1-${{ hashFiles('src/images.json', 'scripts/import-media.mjs') }}
       - run: npm install
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
