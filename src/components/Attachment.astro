@@ -1,0 +1,5 @@
+---
+const { src } = Astro.props;
+const filename = src.split('/').pop();
+---
+<p class="media-unavailable">Attachment not yet migrated: {filename}</p>

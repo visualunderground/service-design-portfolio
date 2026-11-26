@@ -1,0 +1,4 @@
+---
+const { label, value, description } = Astro.props;
+---
+<article class="metric"><strong>{value}</strong><p>{label}</p>{description && <p>{description}</p>}</article>

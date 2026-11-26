@@ -3,6 +3,6 @@ import images from '../images.json';
 const { src, alt, caption } = Astro.props;
 const filename = src.split('/').pop();
 const image = images[filename];
-if (!image) throw new Error('Missing portfolio image: ' + filename);
+const hasCaption = caption || Astro.slots.has('default');
 ---
-<figure><img loading="lazy" src={import.meta.env.BASE_URL.replace(/\/$/, '') + '/media/' + encodeURIComponent(filename)} alt={alt ?? caption ?? filename.replace(/\.[^.]+$/, '').replaceAll('-', ' ')} />{caption && <figcaption>{caption}</figcaption>}</figure>
+<figure>{image ? <img loading="lazy" src={import.meta.env.BASE_URL.replace(/\/$/, '') + '/media/' + encodeURIComponent(filename)} alt={alt ?? caption ?? filename.replace(/\.[^.]+$/, '').replaceAll('-', ' ')} /> : <div class="media-unavailable">Image not yet migrated</div>}{hasCaption && <figcaption>{caption}<slot /></figcaption>}</figure>

@@ -1,22 +1,38 @@
 ---
-import * as work from '../../content/index.mdx';
-import * as about from '../../content/about.mdx';
-import * as photos from '../../content/behind-the-scenes/index.mdx';
 import ProjectGrid from '../components/Projects.astro';
 import PhotoGallery from '../components/Gallery.astro';
 import Figure from '../components/PortfolioMedia.astro';
 import Link from '../components/Link.astro';
+import Metric from '../components/Metric.astro';
+import Video from '../components/Video.astro';
+import Attachment from '../components/Attachment.astro';
 export function getStaticPaths() {
-  return [undefined, 'about', 'photos'].map(slug => ({ params: { slug } }));
+  const pages = import.meta.glob([
+    '../../content/index.mdx',
+    '../../content/about.mdx',
+    '../../content/design-approach.mdx',
+    '../../content/leadership-principles.mdx',
+    '../../content/behind-the-scenes/index.mdx',
+    '../../content/projects/*.mdx',
+  ], { eager: true });
+  const routes = Object.values(pages).map(page => ({
+    params: { slug: page.frontmatter.route.replace(/^\/|\/$/g, '') || undefined },
+    props: { page },
+  }));
+  const photos = routes.find(({ params }) => params.slug === 'behind-the-scenes');
+  routes.push({ params: { slug: 'photos' }, props: photos.props });
+  return routes;
 }
 const slug = Astro.params.slug || '';
-const { Content, frontmatter } = ({ '': work, about, photos })[slug];
+const { Content, frontmatter } = Astro.props.page;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <!doctype html>
 <html lang="en-GB"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>{slug ? frontmatter.title + ' — Tom Carrington' : 'Tom Carrington'}</title></head>
-<body><header><a href={base + '/'}>Tom Carrington</a><nav aria-label="Main">{[['','Work'],['about','About'],['photos','Photos']].map(([route,label]) => <a href={base + '/' + (route ? route + '/' : '')} aria-current={slug === route ? 'page' : undefined}>{label}</a>)}</nav></header>
-<main>{slug && <h1>{frontmatter.title}</h1>}<Content components={{ProjectGrid, PhotoGallery, Figure, Columns:'section', Column:'div', Principle:'article', a:Link}} /></main></body></html>
+<body><header><a href={base + '/'}>Tom Carrington</a><nav aria-label="Main">{[['','Work'],['about','About'],['photos','Photos']].map(([route,label]) => <a href={base + '/' + (route ? route + '/' : '')} aria-current={(slug === route || (route === 'photos' && slug === 'behind-the-scenes')) ? 'page' : undefined}>{label}</a>)}</nav></header>
+<main>{slug && <h1>{frontmatter.title}</h1>}{frontmatter.cover && <Figure src={frontmatter.cover} alt="" />}<Content components={{ProjectGrid, PhotoGallery, Figure, Columns:'section', Column:'div', Principle:'article', ApproachPrinciple:'article', Challenge:'aside', ProjectDetails:'aside', Metrics:'section', Metric, Video, Attachment, a:Link}} /></main></body></html>
 <style is:global>
 * { box-sizing:border-box } body { max-width:72rem; margin:auto; padding:0 clamp(1rem,4vw,4rem) 5rem; color:#202425; background:#faf9f6; font:1.05rem/1.55 system-ui,sans-serif } header,nav {display:flex; align-items:center; gap:1.25rem} header {justify-content:space-between; padding:1.4rem 0; border-bottom:1px solid #bbb; flex-wrap:wrap} a {color:inherit;text-underline-offset:.22em} nav a[aria-current=page] {font-weight:700} main {padding-top:2rem} h1 {max-width:23ch; font-size:clamp(2.4rem,5vw,4.5rem); line-height:1.06; letter-spacing:-.045em} p {max-width:68ch} .gallery,section {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1.5rem} section {margin:1rem 0} figure {margin:0} img {display:block;max-width:100%;height:auto} .gallery img {width:100%;aspect-ratio:4/3;object-fit:contain;background:white} hr {margin:3rem 0;border:0;border-top:1px solid #bbb}
+
+article, aside {min-width:0} .metric strong {display:block;font-size:1.75rem;line-height:1.2} .metric p {margin:.4rem 0} .video {width:100%;aspect-ratio:16/9;border:0} figcaption,.media-unavailable {font-size:.9rem;color:#555} .media-unavailable {padding:.75rem;border:1px solid #ccc;margin:.75rem 0} figure {margin-block:1rem}
 </style>

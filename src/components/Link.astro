@@ -1,5 +1,8 @@
 ---
 const { href, ...attributes } = Astro.props;
-const url = href?.startsWith('/') ? new URL(href,'https://tomcarrington.super.site').href : href;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const oldOrigin = 'https://tomcarrington.super.site';
+const local = typeof href === 'string' && href.startsWith(oldOrigin + '/') ? href.slice(oldOrigin.length) : href;
+const url = typeof local === 'string' && local.startsWith('/') && !local.startsWith('//') && !(base && (local === base || local.startsWith(base + '/'))) ? base + local : local;
 ---
 <a href={url} {...attributes}><slot /></a>

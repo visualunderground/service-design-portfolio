@@ -1,0 +1,5 @@
+---
+const { provider, id, title } = Astro.props;
+const src = provider === 'vimeo' && /^\d+$/.test(String(id)) ? 'https://player.vimeo.com/video/' + id : undefined;
+---
+{src && <iframe class="video" src={src} title={title || 'Video'} loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>}
