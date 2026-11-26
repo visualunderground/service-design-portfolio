@@ -1,6 +1,8 @@
 ---
-import projects from '../projects.json';
 import Figure from './PortfolioMedia.astro';
 import Link from './Link.astro';
+const projects = Object.values(import.meta.glob('../../content/projects/*.mdx', { eager: true }))
+  .map(page => page.frontmatter)
+  .sort((a, b) => a.order - b.order);
 ---
-<div class="gallery">{projects.map(({title, route, cover}) => <Link href={'/' + route + '/'}>{cover && <Figure src={cover} alt="" />}<strong>{title}</strong></Link>)}</div>
+<div class="gallery">{projects.map(({title, route, cover}) => <Link href={route}>{cover && <Figure src={cover} alt="" />}<strong>{title}</strong></Link>)}</div>
