@@ -1,5 +1,5 @@
 ---
 import Figure from './PortfolioMedia.astro';
-const entries = Object.values(import.meta.glob('../../content/behind-the-scenes/*.mdx', { eager: true })).filter(page => page.frontmatter.sourceId && page.frontmatter.caption !== undefined);
+const entries = Object.values(import.meta.glob('../../content/behind-the-scenes/*.mdx', { eager: true })).filter(page => page.frontmatter.caption !== undefined);
 ---
 <div class="gallery">{entries.map(({Content, frontmatter}) => <article><Content components={{ Figure }} /><p>{frontmatter.caption || frontmatter.title}</p></article>)}</div>
