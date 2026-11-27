@@ -1,4 +1,4 @@
-"""Verify built pages, local links and media without any external service."""
+"""Verify built pages, local links and media without any external media dependency."""
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit, unquote, urljoin
@@ -38,9 +38,9 @@ for page, parser in parsed.items():
         if url.scheme not in ("http", "https"):
             continue
         host = url.hostname or ""
-        if host in ("super.so", "super.site", "notion.so", "notion.site") or host.endswith((".super.so", ".super.site", ".notion.so", ".notion.site")):
-            errors.append(f"Legacy platform: {relative}: {ref}")
         if host != "visualunderground.github.io":
+            if tag in ("img", "source") or url.path.lower().endswith(".pdf"):
+                errors.append(f"Non-local media: {relative}: {ref}")
             external.add(host)
             continue
         if not url.path.startswith(base):
